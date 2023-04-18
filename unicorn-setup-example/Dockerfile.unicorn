@@ -1,0 +1,20 @@
+FROM debian:bookworm-slim as build
+
+# Install libunicron & dev headers
+RUN apt-get update && \
+    apt-get install -y libunicorn2 libunicorn-dev golang ca-certificates && \
+    update-ca-certificates
+
+COPY go.mod .
+COPY go.sum .
+COPY main.go .
+
+RUN go build .
+
+FROM debian:bookworm-slim
+COPY --from=build test test
+# Warning: Do not use debian native multi arch as debian uses architecture specific paths here like
+# /usr/lib/x86_64-linux-gnu/libunicorn.so.2 or /usr/lib/aarch64-linux-gnu/libunicorn.so.2
+COPY --from=build /usr/lib/*/libunicorn.so.2 /usr/lib/libunicorn.so.2
+
+ENTRYPOINT ["./test"]
