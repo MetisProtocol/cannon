@@ -46,5 +46,6 @@ This is experimental software, and should be treated as such.
 The authors of this project make no guarantees of security of ANY KIND.
 
 ## Variable settings for ubuntu machine
-GOROOT=/usr/local/go
-GOPATH=/home/ubuntu
+GOROOT=/usr/local/go.
+GOPATH=/home/ubuntu.
+GOFLAGS=-buildvcs=false
